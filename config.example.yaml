@@ -1,0 +1,39 @@
+# Copy this to config.yaml and fill in your own values. config.yaml is
+# gitignored -- it's the file with your actual taste in it, no reason for
+# it to be public even though nothing here is a secret.
+
+meetup_groups:
+  # Each group's public ICS export: https://www.meetup.com/<group-slug>/events/ical/
+  # No auth needed. Curate ~15-25 groups you actually care about --
+  # this list IS your Meetup discovery, there's no open-search fallback.
+  - "https://www.meetup.com/example-group-slug/events/ical/"
+
+rss_feeds:
+  - name: "skint"
+    url: "https://www.theskint.com/feed/"
+  - name: "timeout"
+    url: "https://www.timeout.com/newyork/blog/feed.rss"
+
+# 3 events you'd genuinely go to, 3 you'd skip even if free.
+# Be specific -- this is what turns the LLM from a generic "is this cool"
+# classifier into something that reflects YOUR taste. Replace these
+# placeholders before running for real; they're deliberately generic so
+# the pipeline runs out of the box, but they won't produce a personalized
+# ranking until you swap them.
+taste:
+  love:
+    - "Small underground music show in a DIY venue or basement"
+    - "Free outdoor community event -- market, festival, block party"
+    - "Weird/niche interest meetup (board games, foraging, zine-making)"
+  hate:
+    - "Generic corporate networking mixer"
+    - "Overpriced tourist-trap bar crawl or rooftop event"
+    - "Sales pitch disguised as a free event"
+
+# Eventbrite event page URLs to check (best-effort -- see adapters/eventbrite_jsonld.py).
+# You'll typically collect these by hand from a category/location listing
+# page, since the search API itself is deprecated.
+eventbrite_event_urls: []
+
+lookahead_days: 14
+min_date_confidence: 0.6
