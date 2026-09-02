@@ -4,18 +4,17 @@ Dedup, expiry, scoring, and state tracking with field-change detection.
 Implements Gap #3: Lightweight field-change tracking - stores previous values
 when venue/time/price changes, enabling "What Changed This Week" notifications.
 """
-import json
+# Import state management for change tracking
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from schema import Event
 
-# Import state management for change tracking
-import sys
 sys.path.insert(0, str(Path(__file__).parent / "Kiro Work"))
 try:
-    from state import track_event_changes, cleanup_old_data
+    from state import cleanup_old_data, track_event_changes
     STATE_TRACKING_AVAILABLE = True
 except ImportError:
     STATE_TRACKING_AVAILABLE = False
@@ -134,7 +133,7 @@ def track_changes(events: list[Event]) -> None:
     for event in events:
         try:
             track_event_changes(event)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - defensive, state tracking shouldn't break pipeline
             print(f"[pipeline] Failed to track changes for {event.title!r}: {e}")
 
 
@@ -149,5 +148,5 @@ def cleanup_state(days: int = 90) -> None:
     try:
         cleanup_old_data(days)
         print(f"[pipeline] Cleaned up events older than {days} days from state.db")
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - defensive, cleanup shouldn't break pipeline
         print(f"[pipeline] Failed to cleanup old data: {e}")

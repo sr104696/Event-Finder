@@ -11,13 +11,13 @@ which handles:
 - Multiple script tags (only some are type "Event")
 - Malformed JSON-LD structures that appear in the wild
 """
-import requests
 from datetime import datetime
 
 import extruct
+import requests
 
-from schema import Event
 from neighborhoods import normalize_neighborhood
+from schema import Event
 
 SOURCE_QUALITY = 4
 HEADERS = {
@@ -43,7 +43,7 @@ def parse_event_page(url: str) -> Event | None:
             syntaxes=['json-ld'],
             errors='ignore'  # don't crash on malformed JSON-LD
         )
-    except Exception:
+    except Exception:  # noqa: BLE001 - intentionally broad, best-effort parsing
         return None
     
     json_ld_blocks = data.get('json-ld', [])

@@ -15,18 +15,19 @@ The two failure modes this exists to avoid:
      that NYC nightlife runs past midnight.
 """
 import json
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
-import feedparser
-import anthropic
-
-from schema import Event
-from neighborhoods import normalize_neighborhood
 
 # Import state management for content-hash ledger
 import sys
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+import anthropic
+import feedparser
+
+from neighborhoods import normalize_neighborhood
+from schema import Event
+
 sys.path.insert(0, str(Path(__file__).parent))
 from state import should_process_article
 
@@ -114,8 +115,7 @@ def extract_events_from_article(client: anthropic.Anthropic, source: str,
     # models sometimes wrap JSON in ```json fences despite instructions -- strip defensively
     if text.startswith("```"):
         text = text.split("```")[1]
-        if text.startswith("json"):
-            text = text[4:]
+        text = text.removeprefix("json")
 
     try:
         items = json.loads(text)

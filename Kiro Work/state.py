@@ -14,7 +14,6 @@ Why SQLite over JSON:
 import hashlib
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 from zoneinfo import ZoneInfo
 
 from sqlite_utils import Database
